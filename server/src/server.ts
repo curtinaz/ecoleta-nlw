@@ -2,6 +2,8 @@ import express from 'express';
 
 const app = express();
 
+app.use(express.json());
+
 const users = [
     'Cristian',
     'Dayton',
@@ -11,7 +13,10 @@ const users = [
 
 app.get('/users', (req, res) => {
 
-    res.json(users);
+    const search = String(request.query.search);
+    const filteredUsers = search ? users.filter(users => users.includes(search)) : users;
+
+    res.json(filteredUsers);
 
     console.log('Listagem de usuários');
 });
@@ -29,7 +34,14 @@ app.get('/users/:id', (req, res) => {
 
 app.post ('/users', (req, res) => {
 
-    return res.json(users);
+    const data = req.body;
+
+    const user = {
+        "name": data.name,
+        "email": data.email
+    }
+
+    return res.json(user);
 
 });
 
